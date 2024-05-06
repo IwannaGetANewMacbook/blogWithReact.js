@@ -25,6 +25,8 @@ function App() {
 
   let [input, setInput] = useState("");
 
+  const timeStamp = new Date();
+
   return (
     <div className="App">
       <div className="black-nav">
@@ -62,7 +64,19 @@ function App() {
             </button>
             {like[i]}
           </h4>
-          <p>4월 26일 발행</p>
+          <p>{timeStamp.toLocaleDateString("kr")} 발행</p>
+          <button
+            onClick={() => {
+              let copy = [...title];
+              copy.splice(i, 1);
+              setTitle(copy);
+              let copyLike = [...like];
+              copyLike.splice(i, 1);
+              setLike(copyLike);
+            }}
+          >
+            삭제
+          </button>
         </div>
       ))}
       {modal ? (
@@ -74,14 +88,33 @@ function App() {
         ></Modal>
       ) : null}
       <br />
-      <input
-        type="text"
-        onChange={(e) => {
-          setInput(e.target.value);
-          console.log(input);
-        }}
-      />
-      <button type="submit">전송</button>
+
+      <form action="">
+        <input
+          type="text"
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
+        />
+        <button
+          type="button"
+          onClick={() => {
+            if (input === "") {
+              alert("1글자 이상 입력해주세요");
+              return false;
+            } else {
+              let copy = [...title];
+              copy.unshift(input);
+              setTitle(copy);
+              let copyLike = [...like];
+              copyLike.unshift(0);
+              setLike(copyLike);
+            }
+          }}
+        >
+          전송
+        </button>
+      </form>
       <h4>{post}</h4>
     </div>
   );
